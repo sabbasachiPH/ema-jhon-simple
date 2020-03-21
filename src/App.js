@@ -9,14 +9,14 @@ import NotFound from "./components/Notfound/NotFound";
 import ProductDetail from "./components/ProductDetail/ProductDetail";
 import Login from "./components/Login/Login";
 import { createContext } from "react";
-
-export const UserContext = createContext();
+import { AuthContextProvider, PrivateRoute } from "./components/Login/useAuth";
+import Shipment from "./Shipment/Shipment";
 
 function App() {
   const user = { name: "GEDU MIA" };
   return (
     <div>
-      <UserContext.Provider value={user.name}>
+      <AuthContextProvider>
         <Header></Header>
         <Router>
           <Switch>
@@ -32,6 +32,9 @@ function App() {
             <Route path="/login">
               <Login></Login>
             </Route>
+            <PrivateRoute path="/shipment">
+              <Shipment></Shipment>
+            </PrivateRoute>
             <Route exact path="/">
               <Shop></Shop>
             </Route>
@@ -43,7 +46,7 @@ function App() {
             </Route>
           </Switch>
         </Router>
-      </UserContext.Provider>
+      </AuthContextProvider>
     </div>
   );
 }
