@@ -1,7 +1,11 @@
 import React from "react";
+import { useContext } from "react";
+import { UserContext } from "../../App";
 
 const Cart = props => {
   const cart = props.cart;
+  const user = useContext(UserContext);
+  console.log(user);
 
   const formatNumber = number => {
     const convertToTwoDecimal = number.toFixed(2);
@@ -40,6 +44,7 @@ const Cart = props => {
       <p>Grand Total : {grandTotal}</p>
       <br />
       {props.children}
+      <p>{user}</p>
     </div>
   );
 };

@@ -9,7 +9,7 @@ const Product = props => {
   return (
     <div className="product">
       <div>
-        <img src={img} alt="" srcset="" />
+        <img src={img} alt="productImage" />
       </div>
       <div>
         <h4 className="product-name">
