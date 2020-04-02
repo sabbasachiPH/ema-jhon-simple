@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import fakeData from "../../fakeData";
 import "./Shop.css";
 import Product from "../Products/Product";
 import Cart from "../Cart/Cart";
@@ -10,20 +9,31 @@ import {
 import { Link } from "react-router-dom";
 
 const Shop = () => {
-  const first10 = fakeData.slice(0, 10);
-  const [products, setProducts] = useState(first10);
+  const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:4200/products")
+      .then(res => res.json())
+      .then(data => {
+        console.log("Data from MongoDB", data);
+        setProducts(data);
+      });
+  }, []);
 
   useEffect(() => {
     const saveCart = getDatabaseCart();
     const productkeys = Object.keys(saveCart);
-    const previousCart = productkeys.map(existingKey => {
-      const product = fakeData.find(pd => pd.key === existingKey);
-      product.quantity = saveCart[existingKey];
-      return product;
-    });
-    setCart(previousCart);
-  }, []);
+    if (products.length) {
+      const previousCart = productkeys.map(existingKey => {
+        const product = products.find(pd => pd.key === existingKey);
+        product.quantity = saveCart[existingKey];
+        return product;
+      });
+      setCart(previousCart);
+    }
+  }, [products]);
+
   const handleAddProduct = product => {
     const toBeAddedKey = product.key;
     const sameProduct = cart.find(pd => pd.key === toBeAddedKey);

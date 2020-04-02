@@ -2,15 +2,32 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import "./Shipment.css";
 import { useAuth } from "../components/Login/useAuth";
+import { getDatabaseCart, processOrder } from "../utilities/databaseManager";
 
 const Shipment = () => {
   const { register, handleSubmit, watch, errors } = useForm();
-  const onSubmit = data => {
-    console.log(data);
-  };
   const auth = useAuth();
+  const onSubmit = data => {
+    //console.log(data);
+    //TO DO: Move this section after payment
+    const savedCart = getDatabaseCart();
+    const orderDetails = { user: auth.user.email, cart: savedCart };
+    fetch("http://localhost:4200/placeOrder", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(orderDetails) // body data type must match "Content-Type" header
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log("Order Placed Successfully. Your Order id is --", data._id);
+        alert("Order placed Successfully. Your Order id is --", data._id);
+        processOrder();
+      });
+  };
 
-  console.log(watch("example")); // watch input value by passing the name of it
+  //console.log(watch("example")); // watch input value by passing the name of it
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="ship-form">
@@ -62,7 +79,7 @@ const Shipment = () => {
       />
       {errors.zipcode && <span className="error">Zip Code is required</span>}
 
-      <input type="submit" />
+      <input type="submit" value="Submit Order" />
     </form>
   );
 };

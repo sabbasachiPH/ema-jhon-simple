@@ -1,31 +1,29 @@
 import React, { useEffect, useState } from "react";
 import {
   getDatabaseCart,
-  removeFromDatabaseCart,
-  processOrder
+  removeFromDatabaseCart
 } from "../../utilities/databaseManager";
-import fakeData from "../../fakeData";
 import ReviewItem from "../ReviewItem/ReviewItem";
 import Cart from "../Cart/Cart";
-import thankyouimage from "../../images/giphy.gif";
+// import thankyouimage from "../../images/giphy.gif";
 import { Link } from "react-router-dom";
 import { useAuth } from "../Login/useAuth";
 
 const Review = () => {
   const [cart, setCart] = useState([]);
-  const [orderPlaced, setOrderPlaced] = useState(false);
+  // const [orderPlaced, setOrderPlaced] = useState(false);
   const auth = useAuth();
 
-  const handlePlaceOrder = () => {
-    setCart([]);
-    setOrderPlaced(true);
-    processOrder();
-  };
+  // const handlePlaceOrder = () => {
+  //   setCart([]);
+  //   setOrderPlaced(true);
+  //   processOrder();
+  // };
 
-  let thankyou;
-  if (orderPlaced) {
-    thankyou = <img src={thankyouimage} alt="ThankyouImage" />;
-  }
+  // let thankyou;
+  // if (orderPlaced) {
+  //   thankyou = <img src={thankyouimage} alt="ThankyouImage" />;
+  // }
 
   const handleRemoveProduct = productkey => {
     //console.log("remove product clicked", productkey);
@@ -37,14 +35,24 @@ const Review = () => {
   useEffect(() => {
     const savedCart = getDatabaseCart();
     const productKeys = Object.keys(savedCart);
-
-    const cartProducts = productKeys.map(key => {
-      const product = fakeData.find(pd => pd.key === key);
-      product.quantity = savedCart[key];
-      return product;
-    });
-    //console.log(cartProducts);
-    setCart(cartProducts);
+    fetch("http://localhost:4200/getProductsByKey", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(productKeys) // body data type must match "Content-Type" header
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        const cartProducts = productKeys.map(key => {
+          const product = data.find(pd => pd.key === key);
+          product.quantity = savedCart[key];
+          return product;
+        });
+        //console.log(cartProducts);
+        setCart(cartProducts);
+      });
   }, []);
   return (
     <div className="shop-container">
@@ -56,7 +64,7 @@ const Review = () => {
             product={pd}
           ></ReviewItem>
         ))}
-        {thankyou}
+        {/* {thankyou} */}
         {!cart.length && (
           <h1>
             Your Cart is Empty . <a href="/shop"> Shop here</a>
