@@ -4,7 +4,7 @@ import Product from "../Products/Product";
 import Cart from "../Cart/Cart";
 import {
   addToDatabaseCart,
-  getDatabaseCart
+  getDatabaseCart,
 } from "../../utilities/databaseManager";
 import { Link } from "react-router-dom";
 
@@ -13,9 +13,9 @@ const Shop = () => {
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:4200/products")
-      .then(res => res.json())
-      .then(data => {
+    fetch("https://shielded-ravine-38559.herokuapp.com/products")
+      .then((res) => res.json())
+      .then((data) => {
         console.log("Data from MongoDB", data);
         setProducts(data);
       });
@@ -25,8 +25,8 @@ const Shop = () => {
     const saveCart = getDatabaseCart();
     const productkeys = Object.keys(saveCart);
     if (products.length) {
-      const previousCart = productkeys.map(existingKey => {
-        const product = products.find(pd => pd.key === existingKey);
+      const previousCart = productkeys.map((existingKey) => {
+        const product = products.find((pd) => pd.key === existingKey);
         product.quantity = saveCart[existingKey];
         return product;
       });
@@ -34,15 +34,15 @@ const Shop = () => {
     }
   }, [products]);
 
-  const handleAddProduct = product => {
+  const handleAddProduct = (product) => {
     const toBeAddedKey = product.key;
-    const sameProduct = cart.find(pd => pd.key === toBeAddedKey);
+    const sameProduct = cart.find((pd) => pd.key === toBeAddedKey);
     let count = 1;
     let newCart;
     if (sameProduct) {
       count = sameProduct.quantity + 1;
       sameProduct.quantity = count;
-      const others = cart.filter(pd => pd.key !== toBeAddedKey);
+      const others = cart.filter((pd) => pd.key !== toBeAddedKey);
       newCart = [...others, sameProduct];
     } else {
       product.quantity = 1;
@@ -54,7 +54,7 @@ const Shop = () => {
   return (
     <div className="shop-container">
       <div className="product-container">
-        {products.map(pr => (
+        {products.map((pr) => (
           <Product
             key={pr.key}
             product={pr}

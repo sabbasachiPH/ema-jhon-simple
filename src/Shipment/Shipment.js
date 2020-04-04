@@ -4,7 +4,7 @@ import "./Shipment.css";
 import { useAuth } from "../components/Login/useAuth";
 import {
   getDatabaseCart,
-  clearLocalShoppingCart
+  clearLocalShoppingCart,
 } from "../utilities/databaseManager";
 import { loadStripe } from "@stripe/stripe-js";
 import CheckoutForm from "../components/checkOutForm/checkOutForm";
@@ -21,29 +21,29 @@ const Shipment = () => {
     "pk_test_nvKlLrRV0UmraXsQzFsAZK2300oTkwMpBw"
   );
 
-  const onSubmit = data => {
+  const onSubmit = (data) => {
     setShipmentInfo(data);
     //console.log(data);
   };
 
-  const handlePlaceOrder = payment => {
+  const handlePlaceOrder = (payment) => {
     //TO DO: Move this section after payment
     const savedCart = getDatabaseCart();
     const orderDetails = {
       user: auth.user.email,
       cart: savedCart,
       address: shipmentInfo,
-      payment: payment
+      payment: payment,
     };
-    fetch("http://localhost:4200/placeOrder", {
+    fetch("https://shielded-ravine-38559.herokuapp.com/placeOrder", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(orderDetails) // body data type must match "Content-Type" header
+      body: JSON.stringify(orderDetails), // body data type must match "Content-Type" header
     })
-      .then(res => res.json())
-      .then(order => {
+      .then((res) => res.json())
+      .then((order) => {
         setOrderId(order._id);
         //TO DO-1 clear localstorage
         clearLocalShoppingCart();
@@ -129,7 +129,7 @@ const Shipment = () => {
         <div
           style={{
             marginTop: "200px",
-            display: shipmentInfo ? "block" : "none"
+            display: shipmentInfo ? "block" : "none",
           }}
           className="col-md-6"
         >

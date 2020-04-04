@@ -8,9 +8,9 @@ const ProductDetail = () => {
   const { productkey } = useParams();
   const [product, setProduct] = useState(null);
   useEffect(() => {
-    fetch("http://localhost:4200/product/" + productkey)
-      .then(res => res.json())
-      .then(data => {
+    fetch("https://shielded-ravine-38559.herokuapp.com/product/" + productkey)
+      .then((res) => res.json())
+      .then((data) => {
         setProduct(data);
       });
   }, [productkey]);

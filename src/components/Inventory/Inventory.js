@@ -7,7 +7,7 @@ const Inventory = () => {
     alert("Uncomment Your fetch Portion");
     // console.log("Total Data", fakeData.length);
     // console.log("Data Before Post", product);
-    // fetch("http://localhost:4200/Addproduct", {
+    // fetch("https://shielded-ravine-38559.herokuapp.com/Addproduct", {
     //   method: "POST",
     //   headers: {
     //     "Content-Type": "application/json"

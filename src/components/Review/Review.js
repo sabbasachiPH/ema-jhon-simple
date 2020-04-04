@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   getDatabaseCart,
-  removeFromDatabaseCart
+  removeFromDatabaseCart,
 } from "../../utilities/databaseManager";
 import ReviewItem from "../ReviewItem/ReviewItem";
 import Cart from "../Cart/Cart";
@@ -25,9 +25,9 @@ const Review = () => {
   //   thankyou = <img src={thankyouimage} alt="ThankyouImage" />;
   // }
 
-  const handleRemoveProduct = productkey => {
+  const handleRemoveProduct = (productkey) => {
     //console.log("remove product clicked", productkey);
-    const newCart = cart.filter(pd => pd.key !== productkey);
+    const newCart = cart.filter((pd) => pd.key !== productkey);
     setCart(newCart);
     removeFromDatabaseCart(productkey);
   };
@@ -35,18 +35,18 @@ const Review = () => {
   useEffect(() => {
     const savedCart = getDatabaseCart();
     const productKeys = Object.keys(savedCart);
-    fetch("http://localhost:4200/getProductsByKey", {
+    fetch("https://shielded-ravine-38559.herokuapp.com/getProductsByKey", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(productKeys) // body data type must match "Content-Type" header
+      body: JSON.stringify(productKeys), // body data type must match "Content-Type" header
     })
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         console.log(data);
-        const cartProducts = productKeys.map(key => {
-          const product = data.find(pd => pd.key === key);
+        const cartProducts = productKeys.map((key) => {
+          const product = data.find((pd) => pd.key === key);
           product.quantity = savedCart[key];
           return product;
         });
@@ -57,7 +57,7 @@ const Review = () => {
   return (
     <div className="shop-container">
       <div className="product-container">
-        {cart.map(pd => (
+        {cart.map((pd) => (
           <ReviewItem
             key={pd.key}
             removeProduct={handleRemoveProduct}
