@@ -8,8 +8,8 @@
 1. LogIn with Google account or email 
 1. Payment using stripe
 
-## Technoloy used in this project <h2> tag
-  1.React
-  1.Express.js
-  1.Node.js
-  1.MongoDB
+## Technoloy used in this project <h2>
+  1. React
+  1. Express.js
+  1. Node.js
+  1. MongoDB
