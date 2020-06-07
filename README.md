@@ -13,3 +13,6 @@
   1. Express.js
   1. Node.js
   1. MongoDB
+  1. Firebase
+  1. Stripe
+  1. Heroku
