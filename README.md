@@ -1,5 +1,5 @@
 # Ema-jon simple <h1>
-#This project is a full featured e-commerce site <h2> tag
+##This project is a full featured e-commerce site <h2> tag
 
 *Main Features: *
 1. Select Item From the available items 
